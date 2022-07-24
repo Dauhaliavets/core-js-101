@@ -174,8 +174,8 @@ function convertToUpperCase(str) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -201,8 +201,19 @@ function extractEmails(/* str */) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let result = '';
+  for (let i = 0; i < height; i += 1) {
+    if (i === 0) {
+      result += `┌${'─'.repeat(width - 2)}┐\n`;
+    } else if (i === height - 1) {
+      result += `└${'─'.repeat(width - 2)}┘\n`;
+    } else {
+      result += `│${' '.repeat(width - 2)}│\n`;
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -221,8 +232,30 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const arrNewCode = [];
+
+  for (let i = 0; i < str.length; i += 1) {
+    const code = str[i].charCodeAt();
+
+    if (!((code > 64 && code < 91) || (code > 96 && code < 123))) {
+      arrNewCode.push(str[i]);
+    } else {
+      const shift = str[i].charCodeAt() + 13;
+      if (code > 96 && code < 123) {
+        if (shift < 123) {
+          arrNewCode.push(String.fromCharCode(shift));
+        } else {
+          arrNewCode.push(String.fromCharCode(shift - 26));
+        }
+      } else if (shift < 91) {
+        arrNewCode.push(String.fromCharCode(shift));
+      } else {
+        arrNewCode.push(String.fromCharCode(shift - 26));
+      }
+    }
+  }
+  return arrNewCode.join('');
 }
 
 /**
