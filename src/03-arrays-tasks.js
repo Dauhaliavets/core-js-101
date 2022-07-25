@@ -217,8 +217,8 @@ function toCsvText(arr) {
  *   [ 0, 1, 2, 3, 4, 5 ] => [ 0, 1, 4, 9, 16, 25 ]
  *   [ 10, 100, -1 ]      => [ 100, 10000, 1 ]
  */
-function toArrayOfSquares(/* arr */) {
-  throw new Error('Not implemented');
+function toArrayOfSquares(arr) {
+  return arr.map((num) => num * num);
 }
 
 /**
@@ -235,8 +235,13 @@ function toArrayOfSquares(/* arr */) {
  *   [ 0, 0, 0, 0, 0]         => [ 0, 0, 0, 0, 0]
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
-function getMovingSum(/* arr */) {
-  throw new Error('Not implemented');
+function getMovingSum(arr) {
+  let sum = 0;
+  return arr.map((el) => {
+    const newValue = el + sum;
+    sum += el;
+    return newValue;
+  });
 }
 
 /**
@@ -250,8 +255,8 @@ function getMovingSum(/* arr */) {
  * [ 'a', 'b', 'c' , null ]  => [ "b", null ]
  * [ "a" ] => []
  */
-function getSecondItems(/* arr */) {
-  throw new Error('Not implemented');
+function getSecondItems(arr) {
+  return arr.filter((_, ind) => ind % 2 !== 0);
 }
 
 /**
@@ -456,8 +461,14 @@ function sortCitiesArray(arr) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  return new Array(n)
+    .fill(0)
+    .map(() => new Array(n).fill(0))
+    .map((item, ind) => {
+      item.splice(ind, 1, 1);
+      return item;
+    });
 }
 
 /**
@@ -473,8 +484,14 @@ function getIdentityMatrix(/* n */) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  const len = end - start + 1;
+  let curItem = start - 1;
+
+  return new Array(len).fill(0).map(() => {
+    curItem += 1;
+    return curItem;
+  });
 }
 
 /**
@@ -522,8 +539,18 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const obj = array.reduce((acc, cur) => {
+    const key = keySelector(cur);
+    const value = valueSelector(cur);
+    if (acc[key]) {
+      acc[key].push(value);
+    } else {
+      acc[key] = [value];
+    }
+    return acc;
+  }, {});
+  return new Map(Object.entries(obj));
 }
 
 /**

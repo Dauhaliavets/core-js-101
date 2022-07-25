@@ -266,8 +266,8 @@ function reverseString(str) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return `${num}`.split('').reverse().join('');
 }
 
 /**
@@ -290,8 +290,17 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const res = `${ccn}`
+    .split('')
+    .reverse()
+    .map((item, ind) => {
+      if (ind % 2 !== 0) {
+        return 2 * item > 9 ? 2 * item - 9 : 2 * item;
+      }
+      return item;
+    });
+  return res.reduce((a, b) => +a + +b) % 10 === 0;
 }
 
 /**
@@ -308,8 +317,13 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const str = `${num}`;
+  if (str.length === 1) {
+    return +str;
+  }
+  const sum = str.split('').reduce((acc, cur) => acc + +cur, 0);
+  return getDigitalRoot(+sum);
 }
 
 /**
@@ -333,8 +347,40 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brackets = [
+    ['(', ')'],
+    ['[', ']'],
+    ['{', '}'],
+    ['<', '>'],
+  ];
+  const stack = [];
+
+  for (let i = 0; i < str.length; i += 1) {
+    const indOpenBracket = brackets.findIndex((el) => el[0] === str[i]);
+
+    if (indOpenBracket !== -1) {
+      if (brackets[indOpenBracket][1] === stack[stack.length - 1]) {
+        stack.pop();
+      } else {
+        stack.push(str[i]);
+      }
+    } else {
+      if (stack.length === 0) {
+        return false;
+      }
+
+      const indCloseBracket = brackets.findIndex((el) => el[1] === str[i]);
+
+      if (brackets[indCloseBracket][0] === stack[stack.length - 1]) {
+        stack.pop();
+      } else {
+        return false;
+      }
+    }
+  }
+
+  return stack.length === 0;
 }
 
 /**
@@ -404,8 +450,10 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  return m1.map((row) => m2[0].map((_, indexI) => row
+    .map((m1Item, indexJ) => m1Item * m2[indexJ][indexI])
+    .reduce((acc, cur) => acc + cur)));
 }
 
 /**
@@ -438,8 +486,39 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  for (let i = 0; i < position.length; i += 1) {
+    if (
+      position[i][0] !== undefined
+      && position[i][0] === position[i][1]
+      && position[i][0] === position[i][2]
+    ) {
+      return position[i][0];
+    }
+    if (
+      position[0][i] !== undefined
+      && position[0][i] === position[1][i]
+      && position[0][i] === position[2][i]
+    ) {
+      return position[0][i];
+    }
+  }
+
+  if (
+    position[0][0] !== undefined
+    && position[0][0] === position[1][1]
+    && position[0][0] === position[2][2]
+  ) {
+    return position[1][1];
+  }
+  if (
+    position[0][2] !== undefined
+    && position[0][2] === position[1][1]
+    && position[0][2] === position[2][0]
+  ) {
+    return position[1][1];
+  }
+  return undefined;
 }
 
 module.exports = {
